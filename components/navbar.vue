@@ -47,17 +47,24 @@
 
     const authStore = useAuthStore()
     const { handleLogout } = await useAuth();
-
+    const router = useRouter()
     const route = useRoute()
     const tab = ref(route.path)
-
+    const toast = useToast()
+    
     const changeTab = (path) => {
         tab.value = path
-        navigateTo(path)
+        router.push(path)
     }
 
-    const logout = () => {
-        handleLogout()
+    const logout = async () => {
+        const response = await handleLogout()
+
+        console.log(response)
+        if (response.status == 200) {
+            toast.success(response.message);
+            router.push('/')
+        }
     }
 
 </script>

@@ -70,7 +70,7 @@ export const usePost = () => {
             "type": "like",
         }
 
-        const { data: response, error } = await $fetch(`${config.public.apiURL}posts/${id}/reaction`, {
+        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/reaction`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
@@ -99,7 +99,7 @@ export const usePost = () => {
             headers["Authorization"] = `Bearer ${token.value}`;
         }
 
-        const { data: response, error } = await $fetch(`${config.public.apiURL}posts/${id}/comment`, {
+        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/comment`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',

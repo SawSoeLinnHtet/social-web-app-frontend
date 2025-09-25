@@ -29,7 +29,7 @@ export const useAuth = async () => {
       await postStore.fetchPosts();
       await profileStore.fetchMyPosts();
 
-      router.push('/home');
+      return response.value
     }
 
     if (error.value) {
@@ -57,34 +57,39 @@ export const useAuth = async () => {
   }
 
   const handleLogout = async () => {
-    token.value = null;
     const accessToken = useCookie("access-token");
     accessToken.value = null;
 
+    const config = useRuntimeConfig();
+
     let headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
     } as any
 
     if (token.value) {
-      headers["Authorization"] = `Bearer ${token.value}`
+        headers["Authorization"] = `Bearer ${token.value}`;
     }
 
-    const { data: response } = await useFetch(`${config.public.apiURL}logout`, {
+    const { data: response, error } = await useFetch(`${config.public.apiURL}logout`, {
       method: "POST",
       headers: headers,
       credentials: "include",
     });
-
-    const authStore = useAuthStore();
-    const profileStore = useProfileStore();
-    const postStore = usePostStore();
     
-    authStore.$reset()
-    profileStore.$reset()
-    postStore.$reset()
 
-    return navigateTo("/");
+    if (response.value && response.value.status == 200) {
+      token.value = null;
+      const authStore = useAuthStore();
+      const profileStore = useProfileStore();
+      const postStore = usePostStore();
+      
+      authStore.$reset()
+      profileStore.$reset()
+      postStore.$reset()
+
+      return response.value
+    }
   };
   
 

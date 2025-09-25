@@ -28,6 +28,7 @@
     import { useRouter } from "vue-router";
 
     const router = useRouter();
+	const toast = useToast();
 
 	const authStore = useAuthStore()
 
@@ -71,14 +72,17 @@
 
 	const { handleLogin } = await useAuth();
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 
 		validateForm()
 
-		handleLogin(form.value)
+		const response = await handleLogin(form.value)
 
         if (authStore.token) {
-            router.push('/home');
+			if (response.status == 200) {
+				toast.success(response.message);
+				router.push('/home');
+			}
         }
 	}
 	
