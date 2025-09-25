@@ -37,6 +37,25 @@ export const useAuth = async () => {
     }
   }
 
+  const handleRegister = async (data: any) => {
+    const { data: response, error } = await useFetch(`${config.public.apiURL}register`, {
+      method: 'POST',
+      body: {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }
+    });
+
+    if (response.value && response.value.status == 200) {
+      return response.value
+    }
+
+    if (error.value) {
+      console.log(error.value);
+    }
+  }
+
   const handleLogout = async () => {
     token.value = null;
     const accessToken = useCookie("access-token");
@@ -69,5 +88,5 @@ export const useAuth = async () => {
   };
   
 
-  return { handleLogin, handleLogout };
+  return { handleLogin, handleLogout, handleRegister };
 };

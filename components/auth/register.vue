@@ -46,6 +46,8 @@
 		password: '',
 	})
 
+    const toast = useToast();
+
 	const errors = ref({
         username: null,
 		email: null,
@@ -86,20 +88,23 @@
 		return isValid;
 	};
 
+    const { handleRegister } = await useAuth();
+
 	const handleSubmit = async () => {
-        console.log(form.value)
 		validateForm()
             
-        const response = await authStore.register(form.value)
+        const response = await handleRegister(form.value)
 
-        console.log(response);
+        if (response.status == 200) {
+            
+            toast.success(response.message + " Please Login");
+            form.value = {
+                username: '',
+                email: '',
+                password: '',
+            }
 
-        if (response) {
             router.push('/');
         }
-
-        // if (authStore.token) {
-        //     router.push('/home');
-        // }
 	}
 </script>
