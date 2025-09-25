@@ -6,8 +6,12 @@
             Your Posts
         </span>
     </div>
-
-    <ProfileMyPostCard v-for="post in my_posts" :key="post.id" :post="post" @deleted="deletePost" @reacted="reactedPost" @commented="commentedPost" />
+    <div v-if="my_posts.length == 0" class="text-center">
+        <span class="text-sm text-gray-500">
+            No posts found
+        </span>
+    </div>
+    <ProfileMyPostCard v-else v-for="post in my_posts" :key="post.id" :post="post" @deleted="deletePost" @reacted="reactedPost" @commented="commentedPost" />
 
 </template>
 
