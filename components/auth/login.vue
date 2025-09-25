@@ -6,8 +6,8 @@
 			
 			<form @submit.prevent="handleSubmit" class="space-y-2">
 				<div>
-					<label for="" class="text-xs">Email or Username</label>
-					<input v-model="form.email" type="text" placeholder="Enter your email or username" class="w-full px-3 py-1 bg-gray-50 border-1 placeholder:text-xs border-gray-100 rounded-lg focus:outline-none text-sm">
+					<label for="" class="text-xs">Email</label>
+					<input v-model="form.email" type="text" placeholder="Enter your email" class="w-full px-3 py-1 bg-gray-50 border-1 placeholder:text-xs border-gray-100 rounded-lg focus:outline-none text-sm">
 					<span v-if="errors.email" class="text-[10px] pl-2 text-red-500">{{ errors.email }}</span>
 				</div>
 				<div>
