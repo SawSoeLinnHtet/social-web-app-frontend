@@ -16,12 +16,24 @@ export const usePostStore = defineStore('post', {
         addPost(post: any) {
             this.posts.unshift(post)
         },
+        deletePost(post_id: number) {
+            this.setPosts(this.posts.filter((post : any) => post.post_info.id !== post_id))
+        },
+        getSinglePost(post_id: number) {
+            return this.posts.find((post : any) => post.post_info.id == post_id)
+        },
         reactedPost(reactedPost: any, id: number) {
-            this.posts.find(post => post.post_info.id == id).reaction_count = reactedPost.reaction_count
+            const post = this.getSinglePost(id);
+            if (post) {
+                post.reaction_count = reactedPost.reaction_count;
+            }
         },
         commentedPost(commentedPost: any, id: number) {
-            this.posts.find(post => post.post_info.id == id).comment_count = commentedPost.comment_count
-            this.posts.find(post => post.post_info.id == id).comments = commentedPost.comments
+            const post = this.getSinglePost(id);
+            if (post) {
+                post.comment_count = commentedPost.comment_count;
+                post.comments = commentedPost.comments;
+            }
         },
         async fetchPosts() {
             const config = useRuntimeConfig();

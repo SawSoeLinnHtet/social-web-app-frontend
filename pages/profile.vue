@@ -8,6 +8,7 @@
     </div>
 
     <ProfileMyPostCard v-for="post in my_posts" :key="post.id" :post="post" @deleted="deletePost" @reacted="reactedPost" @commented="commentedPost" />
+
 </template>
 
 <script setup>
@@ -25,20 +26,19 @@
     const { getProfile, getMyPosts } = useProfile();
     
     const deletePost = (id) => {
-        console.log("hello");
         my_posts.value = my_posts.value.filter(post => post.post_info.id !== id)
     }
 
     const reactedPost = (likedPost, id) => {
-		my_posts.value.find(post => post.post_info.id == id).reaction_count = likedPost.reaction_count
+		profileStore.reactedPost(likedPost, id)
 	}
 
 	const commentedPost = (commentedPost, id) => {
-		my_posts.value.find(post => post.post_info.id == id).comment_count = commentedPost.comment_count
-		my_posts.value.find(post => post.post_info.id == id).comments = commentedPost.comments
+		profileStore.commentedPost(commentedPost, id)
 	}
 
     onMounted(() => {
+        profileStore.fetchMyPosts()
         getMyPosts()
     })
 </script>

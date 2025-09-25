@@ -3,6 +3,7 @@ export const useProfile = () => {
 
     const profileStore = useProfileStore();
     const authStore = useAuthStore();
+    const postStore = usePostStore();
 
     const getProfile = async () => {
         authStore.fetchUser();
@@ -38,7 +39,9 @@ export const useProfile = () => {
         });
 
         if (response && response.status == 200) {
-            profileStore.setMyPosts(profileStore.my_posts.filter(post => post.post_info.id !== post_id))
+            profileStore.deletePost(post_id)
+            postStore.deletePost(post_id)
+            profileStore.fetchProfile()
         }
     }
 
@@ -67,9 +70,10 @@ export const useProfile = () => {
 
         if (response && response.status == 200) {
             const likedPost = response.data;
-            const id = response.data.post_info.id
+            const id = likedPost.post_info.id
 
             profileStore.reactedPost(likedPost, id)
+            profileStore.fetchProfile()
     
             return likedPost
         }
@@ -99,6 +103,7 @@ export const useProfile = () => {
             const id = response.data.post_info.id
 
             profileStore.commentedPost(commentedPost, id)
+            profileStore.fetchProfile()
     
             return commentedPost
         }

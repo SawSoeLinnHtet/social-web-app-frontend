@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<PostForm :created="createdPost"/>
-		<PostCard v-for="post in posts" :key="post.id" :post="post" :reacted="reactedPost" :commented="commentedPost" />
+		<PostCard v-for="post in posts" :key="post.id" :post="post" @reacted="reactedPost" @commented="commentedPost" />
 	</div>
 </template>
 
@@ -23,12 +23,16 @@
         posts.value.unshift(post)
     }
 
-    const reactedPost = (likedPost) => {
-		posts.value.find(post => post.post_info.id == likedPost['post_info'].id).reaction_count = likedPost['reaction_count']
+    const reactedPost = (likedPost, id) => {
+		postStore.reactedPost(likedPost, id)
 	}
 
-	const commentedPost = (commentedPost) => {
-		posts.value.find(post => post.post_info.id == commentedPost['post_info'].id).comment_count = commentedPost['comment_count']
-		posts.value.find(post => post.post_info.id == commentedPost['post_info'].id).comments = commentedPost['comments']
+	const commentedPost = (commentedPost, id) => {
+		postStore.commentedPost(commentedPost, id)
 	}
+
+	onMounted(() => {
+        postStore.fetchPosts()
+        getPosts()
+    })
 </script>

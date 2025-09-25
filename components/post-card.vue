@@ -43,7 +43,7 @@
         </div>
 
         <!-- Comment -->
-        <div class="mt-5">
+        <div class="mt-5" :class="post.comments.length > 3 ? 'h-[200px] overflow-y-scroll' : ''">
             <div v-for="comment in post.comments" :key="comment.id">
                 <div class="flex items-start gap-2 mt-3">
                     <div class="bg-gray-300 rounded-full p-2 mt-2 shadow">
@@ -104,14 +104,14 @@
     const reactionPost = (id) => {
         const likedPost = reactPost(id);
         
-        emit('reacted', likedPost);
+        emit('reacted', likedPost, id);
     }
 
     const commentedPost = (id) => {
 
         const commentedPost = commentPost(id, { content: comment.value });
         
-        emit('commented', commentedPost); 
+        emit('commented', commentedPost, id); 
         comment.value = '';
     }
 </script>

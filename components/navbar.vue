@@ -10,14 +10,14 @@
                         <span class="text-black font-bold">Social</span>
                     </div>
                     <nav class="flex items-center gap-3">
-                        <a @click="changeTab('/home')" class="flex items-center gap-2 px-3 py-2 rounded-md" :class="tab == '/home' ? 'bg-gray-900 text-white text-gray-800' : 'text-gray-800'">
+                        <button @click="changeTab('/home')" class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer" :class="tab == '/home' ? 'bg-gray-900 text-white text-gray-800' : 'text-gray-800'">
                             <HomeIcon class="size-4"/>
                             <span class="text-xs font-bold">Home</span>
-                        </a>
-                        <a @click="changeTab('/profile')" class="flex items-center gap-2 px-3 py-2 rounded-md" :class="tab == '/profile' ? 'bg-gray-900 text-white text-gray-800' : 'text-gray-800'">
+                        </button>
+                        <button @click="changeTab('/profile')" class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer" :class="tab == '/profile' ? 'bg-gray-900 text-white text-gray-800' : 'text-gray-800'">
                             <UserIcon class="size-4"/>
                             <span class="text-xs">Profile</span>
-                        </a>
+                        </button>
                     </nav>
                 </div>
                 <div class="flex items-center gap-4">

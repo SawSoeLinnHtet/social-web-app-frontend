@@ -43,7 +43,7 @@
         </div>
 
         <!-- Comment -->
-        <div class="mt-5">
+        <div class="mt-5" :class="post?.comments?.length > 5 ? 'h-[200px] overflow-y-scroll' : ''">
             <div v-for="comment in post.comments" :key="comment.id">
                 <div class="flex items-start gap-2 mt-3">
                     <div class="bg-gray-300 rounded-full p-2 mt-2 shadow">
@@ -74,7 +74,7 @@
 
     const emit = defineEmits(['deleted', 'reacted', 'commented']);
 
-    const { commentPost, reactPost } = usePost();
+    const { commentPost, reactPost } = useProfile();
 
     const comment = ref('');
     const postStore = usePostStore();
@@ -116,5 +116,6 @@
         const commentedPost = commentPost(id, { content: comment.value });
         
         emit('commented', commentedPost, id); 
+        comment.value = '';
     }
 </script>

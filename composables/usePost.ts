@@ -78,12 +78,12 @@ export const usePost = () => {
         });
 
         if (response && response.status == 200) {
-            const likedPost = response;
-            const id = likedPost.data.post_info.id
+            const likedPost = response.data;
+            const id = likedPost.post_info.id
 
-            profileStore.reactedPost(likedPost.data, id)
+            profileStore.reactedPost(likedPost, id)
     
-            return likedPost.data
+            return likedPost
         }
     }
 
@@ -107,11 +107,11 @@ export const usePost = () => {
         });
 
         if (response && response.status == 200) {
-            const commentedPost = response;
-            const id = commentedPost.data.post_info.id
-            postStore.commentedPost(commentedPost.data, id)
+            const commentedPost = response.data;
+            const id = commentedPost.post_info.id
+            postStore.commentedPost(commentedPost, id)
     
-            return commentedPost.data
+            return commentedPost
         }
     }
 
