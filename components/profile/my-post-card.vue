@@ -24,7 +24,9 @@
         <!-- Post actions -->
         <div class="flex items-center gap-6 text-sm text-gray-600 mb-5">
             <button class="flex items-center gap-1 hover:text-red-500 cursor-pointer">
-                <HeartIcon @click="reactionPost(post.post_info.id)" class="size-4" /> <span class="text-sm">{{ post.reaction_count }}</span>
+                <HeartIconOutline v-if="!post.user_liked" @click="reactionPost(post.post_info.id)" class="size-4" />
+                <HeartIconSolid v-else @click="reactionPost(post.post_info.id)" class="size-4 text-red-500" /> 
+                <span class="text-sm">{{ post.reaction_count }}</span>
             </button>
             <button class="flex items-center gap-1 hover:text-blue-500 cursor-pointer">
                 <ChatBubbleOvalLeftIcon class="size-4" /> <span class="text-sm">{{ post.comment_count }}</span>
@@ -67,7 +69,8 @@
 </template>
 
 <script setup>
-    import { HeartIcon, ChatBubbleOvalLeftIcon, PaperAirplaneIcon, TrashIcon } from '@heroicons/vue/24/outline';
+    import { HeartIcon as HeartIconOutline, ChatBubbleOvalLeftIcon, PaperAirplaneIcon, TrashIcon } from '@heroicons/vue/24/outline';
+    import { HeartIcon as HeartIconSolid } from '@heroicons/vue/24/solid';
     import non_pf_logo from '@/assets/images/icons/user.png'
 
     const profileStore = useProfileStore();

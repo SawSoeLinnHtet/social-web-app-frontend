@@ -26,7 +26,9 @@ export const usePostStore = defineStore('post', {
             const post = this.getSinglePost(id);
             if (post) {
                 post.reaction_count = reactedPost.reaction_count;
+                post.user_liked = reactedPost.user_liked;
             }
+            return this.getPosts;
         },
         commentedPost(commentedPost: any, id: number) {
             const post = this.getSinglePost(id);
@@ -34,6 +36,7 @@ export const usePostStore = defineStore('post', {
                 post.comment_count = commentedPost.comment_count;
                 post.comments = commentedPost.comments;
             }
+            return this.getPosts;
         },
         async fetchPosts() {
             const config = useRuntimeConfig();

@@ -12,10 +12,6 @@
 </template>
 
 <script setup>
-    import { SparklesIcon} from '@heroicons/vue/24/solid';
-    import { HomeIcon, UserIcon, ArrowLeftStartOnRectangleIcon, PhotoIcon, VideoCameraIcon, HeartIcon, ChatBubbleOvalLeftIcon, PaperAirplaneIcon  } from '@heroicons/vue/24/outline';
-    import non_pf_logo from '@/assets/images/icons/user.png'
-
     definePageMeta({
         layout: 'default'
     })

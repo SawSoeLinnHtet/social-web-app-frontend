@@ -6,6 +6,8 @@
 </template>
 
 <script setup>
+    import PostCard from '~/components/post/card.vue'
+    
     definePageMeta({
         layout: 'default'
     })
@@ -13,14 +15,10 @@
 	const { posts } = storeToRefs(usePostStore());
 	const postStore = usePostStore();
 
-	const { getPosts } = await usePost();
-
-	onMounted(() => {
-		posts.value = postStore.posts
-	});
+	const { getPosts } = usePost();
 
     const createdPost = (post) => {
-        posts.value.unshift(post)
+        postStore.addPost(post)
     }
 
     const reactedPost = (likedPost, id) => {
