@@ -12,7 +12,7 @@ export const useProfile = () => {
 
     const getMyPosts = async () => {
         const config = useRuntimeConfig();
-        const { data: response, error } = await useFetch(`${config.public.apiURL}my-posts`, {
+        const response = await $fetch(`${config.public.apiURL}my-posts`, {
             method: 'GET',
             headers: {
                 "Accept": "application/json",
@@ -21,14 +21,14 @@ export const useProfile = () => {
             }
         });
 
-        if (response.value && response.value.status == 200) {
-            profileStore.setMyPosts(response.value.data);
+        if (response && response.status == 200) {
+            profileStore.setMyPosts(response.data);
         }
     }
 
     const deletePost = async (post_id: number) => {
         const config = useRuntimeConfig();
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${post_id}`, {
+        const response = await $fetch(`${config.public.apiURL}posts/${post_id}`, {
             method: 'DELETE',
             headers: {
                 "Accept": "application/json",
@@ -37,7 +37,7 @@ export const useProfile = () => {
             }
         });
 
-        if (response.value && response.value.status == 200) {
+        if (response && response.status == 200) {
             profileStore.setMyPosts(profileStore.my_posts.filter(post => post.post_info.id !== post_id))
         }
     }
@@ -58,16 +58,16 @@ export const useProfile = () => {
             "type": "like",
         }
 
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/reaction`, {
+        const response = await $fetch(`${config.public.apiURL}posts/${id}/reaction`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
             body: data,
         });
 
-        if (response.value && response.value.status == 200) {
-            const likedPost = response.value.data;
-            const id = response.value.data.post_info.id
+        if (response && response.status == 200) {
+            const likedPost = response.data;
+            const id = response.data.post_info.id
 
             profileStore.reactedPost(likedPost, id)
     
@@ -87,16 +87,16 @@ export const useProfile = () => {
             headers["Authorization"] = `Bearer ${token.value}`;
         }
 
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/comment`, {
+        const response = await $fetch(`${config.public.apiURL}posts/${id}/comment`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
             body: data,
         });
 
-        if (response.value && response.value.status == 200) {
-            const commentedPost = response.value.data;
-            const id = response.value.data.post_info.id
+        if (response && response.status == 200) {
+            const commentedPost = response.data;
+            const id = response.data.post_info.id
 
             profileStore.commentedPost(commentedPost, id)
     
@@ -108,5 +108,7 @@ export const useProfile = () => {
         getProfile,
         getMyPosts,
         deletePost,
+        reactPost,
+        commentPost,
     }
 }

@@ -9,50 +9,50 @@ export const useAuth = async () => {
   const profileStore = useProfileStore();
 
   const handleLogin = async (data: any) => {
-    const { data: response, error } = await useFetch(`${config.public.apiURL}login`, {
-      method: 'POST',
-      body: {
-        email: data.email,
-        password: data.password,
+    try {
+      const response = await $fetch(`${config.public.apiURL}login`, {
+        method: 'POST',
+        body: {
+          email: data.email,
+          password: data.password,
+        }
+      });
+
+      if (response && response.token) {
+        const accessToken = useCookie("access-token");
+        accessToken.value = response.token;
+        authStore.setToken(response.token);
+        authStore.setAuthUser(response.user);
       }
-    });
 
-    if (response.value && response.value.token) {
-      const accessToken = useCookie("access-token");
-      accessToken.value = response.value.token;
-      authStore.setToken(response.value.token);
-      authStore.setAuthUser(response.value.user);
-    }
+      if (response && response.status == 200) {
+        await authStore.fetchUser();
+        await postStore.fetchPosts();
+        await profileStore.fetchMyPosts();
 
-    if (response.value && response.value.status == 200) {
-      await authStore.fetchUser();
-      await postStore.fetchPosts();
-      await profileStore.fetchMyPosts();
-
-      return response.value
-    }
-
-    if (error.value) {
-      console.log(error.value);
+        return response
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
   const handleRegister = async (data: any) => {
-    const { data: response, error } = await useFetch(`${config.public.apiURL}register`, {
-      method: 'POST',
-      body: {
-        username: data.username,
-        email: data.email,
-        password: data.password,
+    try {
+      const response = await $fetch(`${config.public.apiURL}register`, {
+        method: 'POST',
+        body: {
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        }
+      });
+
+      if (response && response.status == 200) {
+        return response
       }
-    });
-
-    if (response.value && response.value.status == 200) {
-      return response.value
-    }
-
-    if (error.value) {
-      console.log(error.value);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -71,24 +71,28 @@ export const useAuth = async () => {
         headers["Authorization"] = `Bearer ${token.value}`;
     }
 
-    const { data: response, error } = await useFetch(`${config.public.apiURL}logout`, {
-      method: "POST",
-      headers: headers,
-      credentials: "include",
-    });
-    
-
-    if (response.value && response.value.status == 200) {
-      token.value = null;
-      const authStore = useAuthStore();
-      const profileStore = useProfileStore();
-      const postStore = usePostStore();
+    try {
+      const response = await $fetch(`${config.public.apiURL}logout`, {
+        method: "POST",
+        headers: headers,
+        credentials: "include",
+      });
       
-      authStore.$reset()
-      profileStore.$reset()
-      postStore.$reset()
 
-      return response.value
+      if (response && response.status == 200) {
+        token.value = null;
+        const authStore = useAuthStore();
+        const profileStore = useProfileStore();
+        const postStore = usePostStore();
+        
+        authStore.$reset()
+        profileStore.$reset()
+        postStore.$reset()
+
+        return response
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   

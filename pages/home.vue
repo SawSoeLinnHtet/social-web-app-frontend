@@ -10,23 +10,17 @@
         layout: 'default'
     })
 
-	const posts = ref();
+	const { posts } = storeToRefs(usePostStore());
 	const postStore = usePostStore();
 
 	const { getPosts } = await usePost();
 
 	onMounted(() => {
-		getPosts()
-
-		posts.value = postStore.getPosts
-
-		console.log(posts.value)
+		posts.value = postStore.posts
 	});
 
     const createdPost = (post) => {
         posts.value.unshift(post)
-
-		console.log(posts.value)
     }
 
     const reactedPost = (likedPost) => {

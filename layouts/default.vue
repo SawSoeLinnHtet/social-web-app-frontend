@@ -20,6 +20,7 @@
     authStore.fetchUser();
 
     const profileStore = useProfileStore();
+    profileStore.fetchProfile();
     profileStore.fetchMyPosts();
 
     const postStore = usePostStore();

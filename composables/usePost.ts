@@ -15,14 +15,14 @@ export const usePost = () => {
             headers["Authorization"] = `Bearer ${token.value}`;
         }
 
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts`, {
+        const response = await $fetch(`${config.public.apiURL}posts`, {
             method: 'GET',
             headers: headers,
             credentials: 'include',
         });
 
-        if (response.value && response.value.status == 200) {
-            postStore.setPosts(response.value.data);
+        if (response && response.status == 200) {
+            postStore.setPosts(response.data);
         }
     }
 
@@ -37,20 +37,20 @@ export const usePost = () => {
         if (token.value) {
             headers["Authorization"] = `Bearer ${token.value}`;
         }
-
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts`, {
+        const response = await $fetch(`${config.public.apiURL}posts`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
             body: data,
         });
 
-        if (response.value && response.value.status == 200) {
-            const newPost = response.value.data;
+        if (response && response.status == 200) {
+            const newPost = response.data;
 
             postStore.addPost(newPost)
+            profileStore.addPost(newPost)
             
-            return newPost
+            return { newPost, response: response }
         }
     }
 
@@ -70,15 +70,15 @@ export const usePost = () => {
             "type": "like",
         }
 
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/reaction`, {
+        const response = await $fetch(`${config.public.apiURL}posts/${id}/reaction`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
             body: data,
         });
 
-        if (response.value && response.value.status == 200) {
-            const likedPost = response.value;
+        if (response && response.status == 200) {
+            const likedPost = response;
             const id = likedPost.data.post_info.id
 
             profileStore.reactedPost(likedPost.data, id)
@@ -99,15 +99,15 @@ export const usePost = () => {
             headers["Authorization"] = `Bearer ${token.value}`;
         }
 
-        const { data: response, error } = await useFetch(`${config.public.apiURL}posts/${id}/comment`, {
+        const response = await $fetch(`${config.public.apiURL}posts/${id}/comment`, {
             method: 'POST',
             headers: headers,
             credentials: 'include',
             body: data,
         });
 
-        if (response.value && response.value.status == 200) {
-            const commentedPost = response.value;
+        if (response && response.status == 200) {
+            const commentedPost = response;
             const id = commentedPost.data.post_info.id
             postStore.commentedPost(commentedPost.data, id)
     

@@ -7,7 +7,7 @@
         </span>
     </div>
 
-    <ProfileMyPostCard v-for="post in myPosts" :key="post.id" :post="post" @deleted="deletePost" @reacted="reactedPost" @commented="commentedPost" />
+    <ProfileMyPostCard v-for="post in my_posts" :key="post.id" :post="post" @deleted="deletePost" @reacted="reactedPost" @commented="commentedPost" />
 </template>
 
 <script setup>
@@ -19,30 +19,26 @@
         layout: 'default'
     })
 
-    const myPosts = ref([])
-    const posts = ref([])
+    const { my_posts } = storeToRefs(useProfileStore());
     const profileStore = useProfileStore();
 
     const { getProfile, getMyPosts } = useProfile();
     
     const deletePost = (id) => {
         console.log("hello");
-        myPosts.value = myPosts.value.filter(post => post.post_info.id !== id)
+        my_posts.value = my_posts.value.filter(post => post.post_info.id !== id)
     }
 
     const reactedPost = (likedPost, id) => {
-		myPosts.value.find(post => post.post_info.id == id).reaction_count = likedPost.reaction_count
+		my_posts.value.find(post => post.post_info.id == id).reaction_count = likedPost.reaction_count
 	}
 
 	const commentedPost = (commentedPost, id) => {
-		myPosts.value.find(post => post.post_info.id == id).comment_count = commentedPost.comment_count
-		myPosts.value.find(post => post.post_info.id == id).comments = commentedPost.comments
+		my_posts.value.find(post => post.post_info.id == id).comment_count = commentedPost.comment_count
+		my_posts.value.find(post => post.post_info.id == id).comments = commentedPost.comments
 	}
 
     onMounted(() => {
-        getProfile();
-        getMyPosts();
-
-        myPosts.value = profileStore.getMyPosts;
+        getMyPosts()
     })
 </script>

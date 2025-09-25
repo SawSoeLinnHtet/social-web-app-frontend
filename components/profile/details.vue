@@ -45,5 +45,10 @@
     import non_pf_logo from '@/assets/images/icons/user.png'
 
     const { profile } = storeToRefs(useProfileStore());
+    const profileStore = useProfileStore();
+
+    onMounted(() => {
+        profileStore.fetchProfile()
+    })
 </script>
     

@@ -26,7 +26,7 @@ export const usePostStore = defineStore('post', {
         async fetchPosts() {
             const config = useRuntimeConfig();
             const token = useAuthStore().token;
-            const { data: response, error } = await useFetch(`${config.public.apiURL}posts`, {
+            const response = await $fetch(`${config.public.apiURL}posts`, {
                 method: 'GET',
                 headers: {
                     "Accept": "application/json",
@@ -34,7 +34,7 @@ export const usePostStore = defineStore('post', {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            this.setPosts(response.value.data);
+            this.setPosts(response.data);
         }
     },
 })

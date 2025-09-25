@@ -49,6 +49,8 @@
         content: '',
     })
 
+    const toast = useToast()
+
     const { createPost } = usePost()
     const content_error = ref(false)
     const checkLength = () => {
@@ -61,11 +63,12 @@
     }
 
     const handleSubmit =  async() => {
-        const newPost = await createPost(form)
+        const { newPost, response } = await createPost(form.value)
 
-        if (newPost) {
+        if (response && response.status == 200) {
             emit('created', newPost)
             form.value.content = ''
+            toast.success(response.message)
         }
     }
 

@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
 		},
 		async fetchUser() {
 			const config = useRuntimeConfig();
-			const { data: response, error } = await useFetch(`${config.public.apiURL}profile`, {
+			const response = await $fetch(`${config.public.apiURL}profile`, {
 				method: 'GET',
 				headers: {
 					"Accept": "application/json",
@@ -33,57 +33,7 @@ export const useAuthStore = defineStore('auth', {
 					"Authorization": `Bearer ${this.token}`
 				}
 			});
-			this.setAuthUser(response.value.data);
+			this.setAuthUser(response.data);
 		},
-		// async register(data: any) {
-		// 	const config = useRuntimeConfig();
-			
-		// 	const { data: response, error } = await useFetch(`${config.public.apiURL}register`, {
-		// 		method: 'POST',
-		// 		body: {
-		// 			username: data.username,
-		// 			email: data.email,
-		// 			password: data.password,
-		// 		}
-		// 	});
-
-		// 	console.log(response.value);
-
-		// 	if (response.value && response.value.status == 200) {
-		// 		return true;
-		// 	}
-				
-		// },
-		// async login(data: any) {
-		// 	const config = useRuntimeConfig();
-			
-		// 	const { data: response, error } = await useFetch(`${config.public.apiURL}login`, {
-		// 		method: 'POST',
-		// 		body: {
-		// 			email: data.email,
-		// 			password: data.password,
-		// 		}
-		// 	});
-		// 	if (response.value && response.value.token) {
-		// 		this.token = response.value.token;
-		// 		this.setToken(response.value.token);
-		// 		this.setAuthUser(response.value.user);
-		// 	}
-
-		// 	if (error.value) {
-		// 		console.log(error.value);
-		// 	}
-		// },
-		// async logout() {
-		// 	const router = useRouter();
-			
-		// 	const accessToken = useCookie("access-token");
-		// 	accessToken.value = null;
-		// 	this.clearAuthUser();
-		// 	this.clearToken();
-		// 	this.authUser = {};
-
-		// 	router.push('/');
-		// },
 	},
 })
